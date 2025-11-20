@@ -4,11 +4,7 @@ module.exports = withNativeFederation({
 
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-    '@angular/platform-browser/animations': {
-      singleton: true,
-      strictVersion: true,
-      requiredVersion: 'auto'
-    }
+
   },
 
   skip: [
