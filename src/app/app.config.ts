@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideToastr } from 'ngx-toastr'
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { AuthService } from './core/services/auth/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,8 +15,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideToastr({
-      timeOut: 3000,
-      positionClass: 'toast-top-right'
-    })
+      easeTime: 150,
+    }),
+    { provide: AuthService, useClass: AuthService },
   ]
 };

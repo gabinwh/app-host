@@ -1,0 +1,104 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['/home']">Store</a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [routerLink]="['/home']"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Home</a
+          >
+        </li>
+      </ul>
+
+      <ul class="navbar-nav">
+        @if (isLoggedIn) {
+        <li class="nav-item dropdown" ngbDropdown>
+          <a
+            class="nav-link dropdown-toggle"
+            id="adminDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            ngbDropdownToggle
+          >
+            Admin
+          </a>
+          <ul
+            class="dropdown-menu"
+            aria-labelledby="adminDropdown"
+            ngbDropdownMenu
+          >
+            <li>
+              <a class="dropdown-item" (click)="navigateToDashboard()"
+                >Dashboard</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="navigateToProducts()"
+                >Products Table</a
+              >
+            </li>
+          </ul>
+        </li>
+        }
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [routerLink]="['/cart']"
+            routerLinkActive="active"
+          >
+            My Cart
+          </a>
+        </li>
+        @if (!isLoggedIn) {
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [routerLink]="['/login']"
+            routerLinkActive="active"
+          >
+            Login
+          </a>
+        </li>
+        } @else {
+        <li class="nav-item dropdown" ngbDropdown>
+          <a
+            class="nav-link dropdown-toggle"
+            id="userDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            ngbDropdownToggle
+          >
+            Welcome, {{ userName }}
+          </a>
+          <ul
+            class="dropdown-menu"
+            aria-labelledby="userDropdown"
+            ngbDropdownMenu
+          >
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          </ul>
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>
