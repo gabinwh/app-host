@@ -1,7 +1,7 @@
-import { Component, ComponentRef, signal, ViewChild, ViewContainerRef } from '@angular/core';
-import { MicroFrontendService } from './core/services/mfe/micro-frontend.service';
+import { Component } from '@angular/core';
 import { NavbarComponent } from './core/components/navbar/navbar';
 import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
