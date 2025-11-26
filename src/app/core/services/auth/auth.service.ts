@@ -51,7 +51,7 @@ export class AuthService {
 
     try {
       const decodedToken: any = jwtDecode(token);
-      return decodedToken.user || null;
+      return decodedToken.sub || null;
     } catch (error) {
       console.error("Failed to decode JWT token:", error);
       return null;
