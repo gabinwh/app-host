@@ -14,6 +14,7 @@ import { RegisterUser } from '../register-user-modal/register-user';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
@@ -108,7 +109,7 @@ export class Login {
           if (this.returnUrl) {
             this.router.navigateByUrl(this.returnUrl);
           } else {
-            this.router.navigate(['/home']);
+            this.router.navigate(['angular-store/home']);
           }
           this.toastrService.success('Login successful!');
         },
@@ -120,10 +121,22 @@ export class Login {
   }
 
   openRegisterModal(): void {
-    this.dialog.open(RegisterUser, {
-      width: '600px',
+    const dialogRef = this.dialog.open(RegisterUser, {
       disableClose: true,
-      autoFocus: false,
     });
+
+    dialogRef.afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((credentials) => {
+        if (credentials) {
+          this.form.patchValue({
+            email: credentials.email,
+            password: credentials.password
+          });
+
+          this.toastrService.success('Registration successful! You can now log in.');
+        }
+      });
   }
+
 }

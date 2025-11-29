@@ -10,16 +10,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialogActions, MatDialogContent } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register-user',
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTooltipModule, ReactiveFormsModule],
+  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTooltipModule, ReactiveFormsModule, MatDialogActions, MatDialogContent],
   templateUrl: './register-user.html',
   styleUrl: './register-user.scss',
 })
 export class RegisterUser {
-  @Output() loginCredentials = new EventEmitter<LoginCredentials>();
 
   protected dialogRef = inject(MatDialogRef<RegisterUser>);
   private fb = inject(FormBuilder);
@@ -85,13 +84,13 @@ export class RegisterUser {
         })
       )
       .subscribe({
-        next: (registerResponse) => {
+        next: () => {
           this.toastrService.success(
             'Account created successfully!',
             'Success!'
           );
           this.dialogRef.close();
-          this.loginCredentials.emit({
+          this.dialogRef.close({
             email: this.form.value.email,
             password: this.form.value.password,
           });

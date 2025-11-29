@@ -29,7 +29,7 @@ export class NavbarComponent {
 
   logout(): void {
     this.authService.logout();
-    this.toastrService.success("Logout realizado com sucesso!");
+    this.toastrService.success("Logout successful!");
   }
 
   navigateToDashboard(): void {

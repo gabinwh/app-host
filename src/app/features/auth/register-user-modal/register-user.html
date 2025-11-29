@@ -1,13 +1,10 @@
 @let isSending = (isSending$ | async);
-<div class="modal-header">
-    <h5 class="modal-title">Register User</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="dialogRef.close()"></button>
-</div>
-<div class="modal-body">
+<h2 class="text-center pt-1" mat-dialog-title>Register User</h2>
+<mat-dialog-content>
     <form [formGroup]="form">
         <mat-form-field appearance="outline" class="w-100 mb-3">
             <mat-label>Name</mat-label>
-            <input formControlName="name" matInput type="text" placeholder="Insira o nome do usuário" />
+            <input formControlName="name" matInput type="text" placeholder="Enter your name." />
             @if (getErrorMessage('name')) {
             <mat-error>
                 {{ getErrorMessage("name") }}
@@ -17,7 +14,7 @@
 
         <mat-form-field appearance="outline" class="w-100 mb-3">
             <mat-label>Email</mat-label>
-            <input formControlName="email" matInput type="email" placeholder="Insira o email" />
+            <input formControlName="email" matInput type="email" placeholder="Enter your email." />
             @if (getErrorMessage('email')) {
             <mat-error>
                 {{ getErrorMessage("email") }}
@@ -27,7 +24,7 @@
 
         <mat-form-field appearance="outline" class="w-100 mb-3">
             <mat-label>Password</mat-label>
-            <input formControlName="password" matInput type="password" placeholder="Insira a senha" />
+            <input formControlName="password" matInput type="password" placeholder="Enter your password." />
             @if (getErrorMessage('password')) {
             <mat-error>
                 {{ getErrorMessage("password") }}
@@ -46,21 +43,12 @@
         </div>
         }
     </form>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="dialogRef.close()">
-        Cancel
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+
+    <button mat-flat-button color="primary" [disabled]="!form.valid || isSending" (click)="onRegister()">
+        @if (!isSending) { Save } @else { Saving... }
     </button>
-    <span [matTooltip]="defineToolTipBtnSave()" matTooltipPosition="above">
-        @if (!isSending) {
-        <button [disabled]="!form.valid || isSending" type="button" class="btn btn-primary" (click)="onRegister()">
-            Save
-        </button>
-        } @else {
-        <button type="button" class="btn btn-primary" disabled>
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Saving...
-        </button>
-        }
-    </span>
-</div>
+</mat-dialog-actions>
