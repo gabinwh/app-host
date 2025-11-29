@@ -2,10 +2,11 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessC
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { provideToastr } from 'ngx-toastr'
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AuthService } from './core/services/auth/auth.service';
+import { AuthInterceptor } from './core/interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +19,10 @@ export const appConfig: ApplicationConfig = {
       easeTime: 150,
     }),
     { provide: AuthService, useClass: AuthService },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ]
 };
