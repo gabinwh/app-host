@@ -24,7 +24,7 @@ export class NavbarComponent {
   }
 
   get userName(): string | null {
-    return this.authService.getUsernameFromToken();
+    return this.authService.user()?.name || null;
   }
 
   logout(): void {
