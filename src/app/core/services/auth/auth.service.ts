@@ -13,12 +13,14 @@ export class AuthService {
   constructor(
     private routerService: Router,
     private httpService: HttpClient,
-  ) { }
+  ) {
+    this.initializeAuthState();
+  }
 
   private apiUrl = 'http://localhost:8080/api/auth';
   private tokenKey = 'auth_token';
   private isLoggedInSignal = signal(false);
-  private user = signal({});
+  public user = signal<JwtResponse | null>(null);
 
   register(body: RegisterBody): Observable<RegisterResponse> {
     return this.httpService.post<RegisterResponse>(`${this.apiUrl}/register`, body);
@@ -28,6 +30,8 @@ export class AuthService {
     return this.httpService.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap(data => {
         localStorage.setItem(this.tokenKey, data.token);
+        const decoded: JwtResponse = jwtDecode(data.token);
+        this.user.set(decoded);
         this.isLoggedInSignal.set(true);
       })
     );
@@ -35,7 +39,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
-
+    this.user.set(null);
     this.isLoggedInSignal.set(false);
     this.routerService.navigate(['/login']);
   }
@@ -48,18 +52,18 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
-  getUsernameFromToken(): string | null {
+  private initializeAuthState() {
     const token = this.getUserToken();
-    if (!token) {
-      return null;
-    }
+    if (!token) return;
+
+    this.isLoggedInSignal.set(true);
 
     try {
-      const decodedToken: JwtResponse = jwtDecode(token);
-      return decodedToken.name || null;
-    } catch (error) {
-      console.error("Failed to decode JWT token:", error);
-      return null;
+      const decoded: JwtResponse = jwtDecode(token);
+      this.user.set(decoded);
+    } catch (e) {
+      console.error('Token inválido', e);
+      this.logout();
     }
   }
 }
